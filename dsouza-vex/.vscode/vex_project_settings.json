@@ -1,0 +1,18 @@
+{
+	"extension": {
+		"version": "0.8.2026020401",
+		"json": 2
+	},
+	"project": {
+		"name": "dsouza-vex",
+		"description": "Code for the RECbot VEX final",
+		"creationDate": "6/1/2026, 1:59:21 PM",
+		"platform": "V5",
+		"language": "python",
+		"slot": 1,
+		"sdkVersion": "V5_1_0_1_25",
+		"python": {
+			"main": "src/main.py"
+		}
+	}
+}
