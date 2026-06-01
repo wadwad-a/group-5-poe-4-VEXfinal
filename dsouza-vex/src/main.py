@@ -276,13 +276,10 @@ def main():
     rightMotor.set_stopping(BRAKE)
     inertialCalibration()   # calibrate the inertial sensor
 
-    
-    driveStraight(92, 0, 50)
-    liftArm(20, 50)
-    driveStraight(31.5, 0, -50)
-    pointTurn(90)
-    driveStraight(2, 0, 50)
-    liftArm(20, -50)
+
+    driveStraight(92, 0, 50)        # drive forward to where the ball is located
+    liftArm(20, 50)                 # lift the arm to grab the ball
+    driveStraight(10, 0, -50)       # drive backward to align the position with the next turn
 # ----------------------------------------------------------------------------------------
 
 main()
