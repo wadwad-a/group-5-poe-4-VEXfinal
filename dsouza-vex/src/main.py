@@ -104,8 +104,8 @@ def driveStraight(distance, setpoint, motorVelocity):
     inertial_1.reset_rotation()  # Reset the rotation value before taking action
 
     # Set stopping mode for motors
-    leftMotor.set_stopping(COAST)
-    rightMotor.set_stopping(COAST)
+    leftMotor.set_stopping(BRAKE)
+    rightMotor.set_stopping(BRAKE)
 
     kP = 0.53   # Proportional constant for driving straight
                 # Used to calculate the correction to maintain course
@@ -277,9 +277,11 @@ def main():
     inertialCalibration()   # calibrate the inertial sensor
 
 
-    driveStraight(92, 0, 50)        # drive forward to where the ball is located
+    driveStraight(94, 0, 90)        # drive forward to where the ball is located
     liftArm(20, 50)                 # lift the arm to grab the ball
-    driveStraight(10, 0, -50)       # drive backward to align the position with the next turn
+    driveStraight(10, 0, -70)       # drive backward to align the position with the next turn
+    pointTurn(90)                   # turn 90 degrees to the right to face the goal
+    driveStraight(67, 0, 90)        # drive forward to the goal
 # ----------------------------------------------------------------------------------------
 
 main()
