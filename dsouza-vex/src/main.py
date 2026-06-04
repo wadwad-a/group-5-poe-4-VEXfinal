@@ -113,7 +113,7 @@ def driveStraight(distance, setpoint, motorVelocity):
     """
     1. distance = distance in inches
     2. setpoint = 0-degrees for driving straiight
-    3. motorVelocity = nnominal motor velocity (+) => forward, (-) => backward
+    3. motorVelocity = nominal motor velocity (+) => forward, (-) => backward
     """
     currentVelocity = 0    # Initialize current velocity for acceleration control
 
@@ -143,7 +143,7 @@ def driveStraight(distance, setpoint, motorVelocity):
     # Drive forward if motorVelocity > 0
     if motorVelocity > 0:
         while leftMotor.position() < distance:
-            currentVelocity = accelerate(currentVelocity, motorVelocity, 1)  # Adjust acceleration rate as needed
+            currentVelocity = accelerate(currentVelocity, motorVelocity, 0.1)  # Adjust acceleration rate as needed
             e = setpoint - inertial_1.rotation()    # Error
             correction = kP * e                     # Motor velocity correction
 
@@ -151,8 +151,8 @@ def driveStraight(distance, setpoint, motorVelocity):
             # if e > 0, (setpoint > rotation) => drifting left
             # if e < 0, (setpoint < rotation) => drifting right
             
-            leftMotor.set_velocity(motorVelocity + correction, PERCENT)
-            rightMotor.set_velocity(motorVelocity - correction, PERCENT)
+            leftMotor.set_velocity(currentVelocity + correction, PERCENT)
+            rightMotor.set_velocity(currentVelocity - correction, PERCENT)
 
             # Spin the motors
             driveTrain.drive(FORWARD)   # Drive both motors forward
@@ -296,9 +296,12 @@ def main():
 
     driveStraight(94, 0, 90)        # drive forward to where the ball is located
     liftArm(20, 50)                 # lift the arm to grab the ball
-    driveStraight(10, 0, -70)       # drive backward to align the position with the next turn
+    driveStraight(10, 0, -40)       # drive backward to align the position with the next turn
     pointTurn(90)                   # turn 90 degrees to the right to face the goal
-    driveStraight(67, 0, 90)        # drive forward to the goal
+    driveStraight(65, 0, 90)        # drive forward to the goal
+    pointTurn(45)                   # turn 45 degrees to the right to align with the goal
+    driveStraight(12, 0, 90)        # drive forward to the goal
+    liftArm(20, -50)
 # ----------------------------------------------------------------------------------------
 
 main()
