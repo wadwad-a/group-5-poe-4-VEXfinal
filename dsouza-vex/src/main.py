@@ -94,12 +94,28 @@ def stopMotors():
     driveTrain.stop()
     wait(0.5, SECONDS)  # Wait 0.5 seconds for the system to stabilize
 
+def accelerate(currentVelocity, targetVelocity, accelerationRate):
+    """
+    1. Gradually accelerate the motors from the current velocity to the target velocity at a specified acceleration rate.
+    2. Parameters:
+        - current_velocity: The current velocity of the motors (in percentage).
+        - target_velocity: The desired velocity of the motors (in percentage).
+        - acceleration_rate: The rate at which to accelerate (in percentage per second).
+    """
+    if currentVelocity >= targetVelocity:
+        currentVelocity = targetVelocity        # If current velocity exceeds target velocity, set current velocity to target velocity
+    else:
+        currentVelocity += accelerationRate     # Otherwise, increase current velocity by the acceleration rate
+
+    return currentVelocity
+
 def driveStraight(distance, setpoint, motorVelocity):
     """
     1. distance = distance in inches
     2. setpoint = 0-degrees for driving straiight
     3. motorVelocity = nnominal motor velocity (+) => forward, (-) => backward
     """
+    currentVelocity = 0    # Initialize current velocity for acceleration control
 
     inertial_1.reset_rotation()  # Reset the rotation value before taking action
 
@@ -127,6 +143,7 @@ def driveStraight(distance, setpoint, motorVelocity):
     # Drive forward if motorVelocity > 0
     if motorVelocity > 0:
         while leftMotor.position() < distance:
+            currentVelocity = accelerate(currentVelocity, motorVelocity, 1)  # Adjust acceleration rate as needed
             e = setpoint - inertial_1.rotation()    # Error
             correction = kP * e                     # Motor velocity correction
 
