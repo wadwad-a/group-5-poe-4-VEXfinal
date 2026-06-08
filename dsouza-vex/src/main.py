@@ -226,7 +226,7 @@ def pointTurn(setPoint):
         kD = 0.07
     else:
         kP = 0.04
-        kD = 0.02
+        kD = 0.018
     
 
     # define maximum turning velocity and previous error term
@@ -292,27 +292,21 @@ def main():
     leftMotor.set_stopping(BRAKE)
     rightMotor.set_stopping(BRAKE)
     inertialCalibration()   # calibrate the inertial sensor
-    
 
-    pointTurn(130)      # test clockwise
-    wait(1, SECONDS)    # wait 1 second
-    pointTurn(0)        # test counter-clockwise
-
-    """driveStraight(94, 0, 90)        # drive forward to where the ball is located
+    driveStraight(94, 0, 90)        # drive forward to where the ball is located
     liftArm(20, 50)                 # lift the arm to grab the ball
     driveStraight(13, 0, -40)       # drive backward to align the position with the next turn
     pointTurn(90)                   # turn to face the goal
-    driveStraight(65, 0, 80)        # drive forward to the goal
+    driveStraight(64.5, 0, 80)        # drive forward to the goal
     pointTurn(45)                   # turn to align with the goal
     driveStraight(14, 0, 90)        # drive forward to the goal
     wait(0.5, SECONDS)              # wait for ball to settle
     liftArm(20, -50)                # lower the arm to release the ball
     liftArm(20, 100)                # lift arm to a higher position for parking sequence
     pointTurn(145)                  # turn to get into position for parking
-    driveStraight(25, 0, -90)       # drive backward to align with the parking spot
+    driveStraight(20, 0, -90)       # drive backward to align with the parking spot
     pointTurn(90)                   # turn to align with the parking spot
-    driveStraight(36, 0, -90)       # drive backward into parking spot
-    """
+    driveStraight(40, 0, -90)     # drive backward into parking spot
 # ----------------------------------------------------------------------------------------
 
 main()
