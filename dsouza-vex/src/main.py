@@ -143,7 +143,9 @@ def driveStraight(distance, setpoint, motorVelocity):
     # Drive forward if motorVelocity > 0
     if motorVelocity > 0:
         while leftMotor.position() < distance:
-            currentVelocity = accelerate(currentVelocity, motorVelocity, 0.1)  # Adjust acceleration rate as needed
+            currentVelocity = accelerate(currentVelocity, motorVelocity, 0.5)  # Adjust acceleration rate as needed
+            if leftMotor.position() >= distance - 10:
+                currentVelocity = currentVelocity * 0.7                         # decceleration
             e = setpoint - inertial_1.rotation()    # Error
             correction = kP * e                     # Motor velocity correction
 
@@ -225,12 +227,12 @@ def pointTurn(setPoint):
         kP = 0.04
         kD = 0.07
     else:
-        kP = 0.04
-        kD = 0.018
+        kP = 0.049
+        kD = 0.00
     
 
     # define maximum turning velocity and previous error term
-    maxVelocity = 50
+    maxVelocity = 40
     previousError = 0.0
 
 
@@ -291,22 +293,22 @@ def main():
     # Set stopping mode for left and right motors to reduce lurch
     leftMotor.set_stopping(BRAKE)
     rightMotor.set_stopping(BRAKE)
-    inertialCalibration()   # calibrate the inertial sensor
+    inertialCalibration()           # calibrate the inertial sensor
 
     driveStraight(94, 0, 90)        # drive forward to where the ball is located
-    liftArm(20, 50)                 # lift the arm to grab the ball
-    driveStraight(13, 0, -40)       # drive backward to align the position with the next turn
+    liftArm(40, 50)                 # lift the arm to grab the ball
+    driveStraight(12.5, 0, -40)     # drive backward to align the position with the next turn
     pointTurn(90)                   # turn to face the goal
-    driveStraight(64.5, 0, 80)        # drive forward to the goal
+    driveStraight(64.5, 0, 65)      # drive forward to the goal
     pointTurn(45)                   # turn to align with the goal
-    driveStraight(14, 0, 90)        # drive forward to the goal
-    wait(0.5, SECONDS)              # wait for ball to settle
-    liftArm(20, -50)                # lower the arm to release the ball
-    liftArm(20, 100)                # lift arm to a higher position for parking sequence
+    driveStraight(14, 0, 50)        # drive forward to the goal
+    wait(1, SECONDS)                # wait for ball to settle
+    liftArm(40, -50)                # lower the arm to release the ball
+    liftArm(40, 100)                # lift arm to a higher position for parking sequence
     pointTurn(145)                  # turn to get into position for parking
-    driveStraight(20, 0, -90)       # drive backward to align with the parking spot
+    driveStraight(18, 0, -90)       # drive backward to align with the parking spot
     pointTurn(90)                   # turn to align with the parking spot
-    driveStraight(40, 0, -90)     # drive backward into parking spot
+    driveStraight(40, 0, -90)       # drive backward into parking spot
 # ----------------------------------------------------------------------------------------
 
 main()
